@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>⚠️ Bất ngờ lắm nha</title>
+
+<style>
+body{margin:0;font-family:Arial;overflow:hidden;text-align:center}
+
+/* 💗 CUTE */
+#cute{height:100vh;background:#c8fff0;padding-top:25vh}
+input,button{padding:12px;font-size:18px;border-radius:10px;border:none;margin-top:20px}
+button{background:#7da2ff;color:white}
+
+/* 💀 HACK */
+#hack{
+display:none;position:fixed;top:0;left:0;
+width:100vw;height:100vh;
+background:radial-gradient(circle,#330000,#000);
+color:#ff2a2a;z-index:9999;
+font-family:Consolas, monospace;
+animation:flash .35s infinite alternate;
+}
+
+@keyframes flash{from{background:#000}to{background:#3a0000}}
+
+.shake{animation:shake .12s infinite}
+@keyframes shake{
+0%{transform:translate(2px,1px)}
+50%{transform:translate(-2px,-1px)}
+100%{transform:translate(2px,1px)}
+}
+
+.virus{position:fixed;font-size:clamp(28px,6vw,60px);pointer-events:none;animation:spin 2s linear infinite}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+.big{font-size:clamp(36px,7vw,80px);margin-top:8vh;text-shadow:0 0 25px red}
+
+.log{
+width:90%;max-width:1100px;margin:6vh auto;
+text-align:left;font-size:clamp(18px,3vw,30px);
+line-height:1.7;white-space:pre-line
+}
+
+.cursor{display:inline-block;width:10px;background:red;margin-left:4px;animation:blink 1s infinite}
+@keyframes blink{0%,50%,100%{opacity:1}25%,75%{opacity:0}}
+
+.finalBox{margin-top:18vh}
+.reviveBar{width:80%;max-width:600px;height:28px;background:#300000;border:2px solid red;border-radius:20px;margin:20px auto;overflow:hidden}
+.reviveFill{height:100%;width:100%;background:red}
+
+.darkMode{background:#000 !important;animation:none !important}
+</style>
+</head>
+
+<body>
+
+<div id="cute">
+<h1>💗 Bạn thích thú cưng nào?</h1>
+<input placeholder="Ví dụ: mèo, chó...">
+<br>
+<button onclick="startHack()">Xác nhận 💕</button>
+</div>
+
+<div id="hack">
+<div class="big">⚠️ HỆ THỐNG BỊ XÂM NHẬP ⚠️</div>
+<div class="log" id="log">Đang kết nối...</div>
+</div>
+
+<audio id="alarm">
+<source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">
+</audio>
+
+<script>
+
+const hack = document.getElementById("hack");
+const log = document.getElementById("log");
+
+let lines=[], percent=0;
+let revive=100, reviveInterval;
+
+/* START */
+
+function startHack(){
+document.getElementById("cute").style.display="none";
+hack.style.display="block";
+document.body.classList.add("shake");
+
+document.getElementById("alarm").play();
+
+setInterval(spawnVirus,350);
+
+stage1();
+}
+
+/* TYPEWRITER */
+
+function typeLine(text,done){
+let i=0,line="";
+function type(){
+if(i<text.length){
+line+=text[i];
+log.innerHTML=lines.join("\n")+"\n"+line+'<span class="cursor"></span>';
+i++;setTimeout(type,18);
+}else{
+lines.push(line);
+if(lines.length>8)lines.shift();
+done();
+}}
+type();
+}
+
+/* HACK PHASE */
+
+function stage1(){
+const cmds=[
+"Kết nối tới máy chủ ẩn...",
+"Vượt tường lửa...",
+"Truy cập camera...",
+"Sao chép dữ liệu cá nhân...",
+"Cài virus...",
+"Tiêm mã độc...",
+"Mã hóa hệ thống...",
+"Kích hoạt virus tự nhân bản..."
+];
+
+let i=0;
+function run(){
+if(i<cmds.length){
+percent+=Math.floor(Math.random()*15)+10;
+if(percent>100)percent=100;
+typeLine(">>> "+cmds[i]+" ["+percent+"%]",()=>{i++;run();});
+}else setTimeout(stage2,1200);
+}
+run();
+}
+
+/* VIRUS */
+
+function spawnVirus(){
+let v=document.createElement("div");
+v.className="virus";
+v.innerText="🦠";
+v.style.left=Math.random()*100+"vw";
+v.style.top=Math.random()*100+"vh";
+document.body.appendChild(v);
+setTimeout(()=>v.remove(),3000);
+}
+
+/* DELETE */
+
+function stage2(){
+let del=0;
+function wipe(){
+if(del<100){
+del+=20;
+typeLine(">>> ĐANG XÓA TOÀN BỘ DỮ LIỆU ["+del+"%]",wipe);
+}else setTimeout(showFinalQuestion,800);
+}
+wipe();
+}
+
+/* QUESTION */
+
+function showFinalQuestion(){
+
+document.body.classList.remove("shake");
+hack.classList.add("darkMode");
+
+hack.innerHTML=`
+<div class="finalBox">
+<p>💀 HỆ THỐNG ĐANG SỤP ĐỔ 💀</p>
+<h2>Bạn muốn cứu máy không?</h2>
+
+<button onclick="goToRealQuestion()">Có</button>
+<button onclick="goToRealQuestion()">Không</button>
+</div>
+`;
+}
+function goToRealQuestion(){
+hack.innerHTML=`
+<div class="finalBox">
+<p>💀 CÂU HỎI CUỐI CÙNG 💀</p>
+<h2>Phùng Huy thích gì?</h2>
+
+<button onclick="chooseRoad()">🚴 Đạp xe road</button>
+<button onclick="chooseBadminton()">🏸 Cầu lông</button>
+</div>
+`;
+}
+
+function chooseWrong(){revive-=15}
+
+function chooseRight(){
+clearInterval(reviveInterval);
+fakeRescue();
+}
+
+/* FAKE RESCUE */
+
+function fakeRescue(){
+hack.innerHTML=`
+<h1 style="margin-top:25vh;color:red">
+🔓 ĐANG GIẢI CỨU HỆ THỐNG...
+</h1>
+`;
+
+setTimeout(showFinalQuestion,2500);
+}
+
+/* CHỌN ĐÁP ÁN */
+
+function chooseRoad(){trollVirus();}
+function chooseBadminton(){trollVirus();}
+
+/* VIRUS FULL SCREEN */
+
+function trollVirus(){
+
+for(let i=0;i<30;i++){
+let v=document.createElement("div");
+v.className="virus";
+v.innerText="🦠";
+v.style.left=Math.random()*100+"vw";
+v.style.top=Math.random()*100+"vh";
+document.body.appendChild(v);
+}
+
+setTimeout(()=>{
+document.body.classList.remove("shake");
+hack.style.display="none";
+
+const cute=document.getElementById("cute");
+cute.style.display="block";
+
+cute.innerHTML=`
+<h1>😈 Bạn đã bị troll 😆</h1>
+<p>Chúc 1 ngày tốt lành 💚</p>
+<button onclick="location.reload()">Chơi lại</button>
+`;
+
+},2500);
+}
+</script>
+</body>
+</html>
+
